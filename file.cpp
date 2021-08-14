@@ -21,5 +21,8 @@ struct h
 
 int main()
 {
+	std::cout << "Hello my name is shady" << std::endl;
 	return 0;
+
+
 }
