@@ -16,6 +16,12 @@ struct h
 		std::cout << 4 << std::endl;
 		return;
 	}
+
+	void h3()
+	{
+		std::cout << 5 << std::endl;
+		return;
+	}
 	
 };
 
