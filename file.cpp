@@ -5,6 +5,11 @@ struct h
 	{
 		std::cout << "hello world" << std::endl;
 	}
+
+	int h3()
+	{
+		return 4;
+	}
 	
 };
 
