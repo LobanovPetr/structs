@@ -11,6 +11,12 @@ struct h
 		return 4;
 	}
 	
+	void h2()
+	{
+		std::cout << 4 << std::endl;
+		return;
+	}
+	
 };
 
 int main()
