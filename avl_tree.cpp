@@ -7,7 +7,6 @@
 template<typename T>
 class avl_tree
 {
-public:
 	struct node
 	{
 		node * left = nullptr;
@@ -57,17 +56,232 @@ public:
 		int l, r;
 		while(ptr != nullptr)
 		{
-			if (ptr->right == nullptr && ptr->left == nullptr)
+			balance(ptr);
+			ptr = ptr->par;
+		}
+	}
+
+	void count_hight(node * ptr)
+	{
+		int l, r;
+		l = ((ptr->left)?ptr->left->hight:0);
+		r = ((ptr->right)?ptr->right->hight:0);
+		ptr->hight = ((l > r)?l:r) + 1;
+	}
+
+	void RR(node * ptr)
+	{
+		node * r = ptr->right;
+		r->par = ptr->par;
+		if (ptr->par)
+		{
+			if (ptr->par->right == ptr)
 			{
-				ptr->hight = 0;
+				ptr->par->right = r;
 			}
 			else
 			{
-				l = ((ptr->left)?ptr->left->hight:0);
-				r = ((ptr->right)?ptr->right->hight:0);
-				ptr->hight = ((l > r)?l:r) + 1;
+				ptr->par->left = r;
 			}
-			ptr = ptr->par;
+		}
+		else
+		{
+			root = ptr->right;
+		}
+
+		ptr->right = r->left;
+		if (r->left)
+		{
+			r->left->par = ptr;
+		}
+
+		r->left = ptr;
+		ptr->par = r;
+
+		count_hight(ptr);
+		count_hight(r);
+
+	}
+
+	void LL(node * ptr)
+	{
+		node * l = ptr->left;
+		l->par = ptr->par;
+		if (ptr->par)
+		{
+			if (ptr->par->right == ptr)
+			{
+				ptr->par->right = l;
+			}
+			else
+			{
+				ptr->par->left = l;
+			}
+		}
+		else
+		{
+			root = ptr->left;
+		}
+
+		ptr->left = l->right;
+		if (l->right)
+		{
+			l->right->par = ptr;
+		}
+
+		l->right = ptr;
+		ptr->par = l;
+
+		count_hight(ptr);
+		count_hight(l);
+	}
+
+	void RL(node * ptr)
+	{
+		node * r = ptr->right;
+		node * rl = r->left;
+
+		rl->par = ptr->par;
+		if (ptr->par)
+		{
+			if (ptr->par->right == ptr)
+			{
+				ptr->par->right = rl;
+			}
+			else
+			{
+				ptr->par->left = rl;
+			}
+		}
+		else
+		{
+			root = rl;
+		}
+
+		r->left = rl->right;
+		if (rl->right)
+		{
+			rl->right->par = r;
+		}
+
+		rl->right = r;
+		r->par = rl;
+
+		ptr->right = rl->left;
+		if(rl->left)
+		{
+			rl->left->par = ptr;
+		}
+
+		rl->left = ptr;
+		ptr->par = rl;
+
+		count_hight(r);
+		count_hight(ptr);
+		count_hight(rl);
+	}
+
+	void LR(node * ptr)
+	{
+		node * y = ptr->left;
+		node * z = y->right;
+
+		z->par = ptr->par;
+		if (ptr->par)
+		{
+			if (ptr->par->right == ptr)
+			{
+				ptr->par->right = z;
+			}
+			else
+			{
+				ptr->par->left = z;
+			}
+		}
+		else
+		{
+			root = z;
+		}
+
+		y->right = z->left;
+		if (z->left)
+		{
+			z->left->par = y;
+		}
+
+		z->left = y;
+		y->par = z;
+
+		ptr->left = z->right;
+		if (z->right)
+		{
+			z->right->par = ptr;
+		}
+
+		z->right = ptr;
+		ptr->par = z;
+		count_hight(ptr);
+		count_hight(y);
+		count_hight(z);
+	}
+
+	int left_hight(node * ptr)
+	{
+		return ((ptr->left)?ptr->left->hight:0);
+	}
+	int right_hight(node * ptr)
+	{
+		return ((ptr->right)?ptr->right->hight:0);
+	}
+
+
+	void balance(node * ptr)
+	{
+		// if ( (left_hight(ptr) - right_hight(ptr) < -1) || (left_hight(ptr) - right_hight(ptr) > 1))
+		// {
+		// 	if (ptr->right && (right_hight(ptr->right->right) > left_hight(ptr->right->right)))
+		// 	{
+		// 		RR(ptr);
+		// 	}
+		// 	else if (ptr->left && (left_hight(ptr->left) - right_hight(ptr->left) > 1))
+		// 	{
+		// 		LL(ptr);
+		// 	}
+		// 	else if (ptr->right && ptr->right->left && (right_hight(ptr) - left_hight(ptr) > 1))
+		// 	{
+		// 		RL(ptr);
+		// 	}
+		// 	else
+		// 	{
+		// 		LR(ptr);
+		// 	}
+		// }
+
+		if (right_hight(ptr) - left_hight(ptr) > 1)
+		{
+			if (right_hight(ptr->right) >= left_hight(ptr->right))
+			{
+				RR(ptr);
+			}
+			else
+			{
+				RL(ptr);
+			}
+		}
+		else if (left_hight(ptr) - right_hight(ptr) > 1)
+		{
+			if (left_hight(ptr->left) >= right_hight(ptr->left))
+			{
+				LL(ptr);
+			}
+			else
+			{
+				LR(ptr);
+			}
+		}
+		else
+		{
+			count_hight(ptr);
 		}
 	}
 
@@ -411,14 +625,26 @@ int main()
 	// std::cout << std::endl;
 
 
-	// for (int i = 0; i < 10; ++i)
-	// {
-	// 	t.insert(w[i]);
-	// }
-	// for (auto a = t.begin(); a != t.end(); ++a)
-	// {
-	// 	std::cout << *a  << " " << a.hight() << std::endl;
-	// }
+	for (int i = 0; i < 10; ++i)
+	{
+		t.insert(w[i]);
+		std::cout << "incert " << w[i] << std::endl;
+		for (auto a = t.begin(); a != t.end(); ++a)
+		{
+			std::cout << *a  << " " << a.hight() << std::endl;
+		}
+	}
+
+	for (int i = 0; i < 10; ++i)
+	{
+		t.erase(w[i]);
+		std::cout << "del "<< w[i] << std::endl;
+		for (auto a = t.begin(); a != t.end(); ++a)
+		{
+			std::cout << *a  << " " << a.hight() << std::endl;
+		}
+
+	}
 
 	// std::cout << std::endl;
 	// std::cout << "parents = " << t.check_parents() << std::endl;
@@ -485,54 +711,54 @@ int main()
 	// t.erase(41);
 
 
-	for (int i = 0; i < 100; ++i)
-	{
-		std::cout << i << std::endl;
-		avl_tree<int> t;
-		std::set<int> s;
-		std::vector<int> v;
-		int idx;
+	// for (int i = 0; i < 100; ++i)
+	// {
+	// 	std::cout << i << std::endl;
+	// 	avl_tree<int> t;
+	// 	std::set<int> s;
+	// 	std::vector<int> v;
+	// 	int idx;
 
-		for (int j = 0; j < 100000; ++j)
-		{
-			tmp = rand() % 100;
-			v.push_back(tmp);
-			s.insert(tmp);
-			t.insert(tmp);
-
-
-		}
-
-		auto it1 = t.begin();
-		auto it2 = s.begin();
-
-		for(;it1 != t.end(); ++it1, ++it2)
-		{
-			if (*it1 != *it2)
-			{
-				std::cout << "bad insert" << std::endl;
-			}
-		}
+	// 	for (int j = 0; j < 100000; ++j)
+	// 	{
+	// 		tmp = rand() % 100;
+	// 		v.push_back(tmp);
+	// 		s.insert(tmp);
+	// 		t.insert(tmp);
 
 
-		for(int j = 0; j < 100000; ++j)
-		{
-			idx = rand() % 100;
-			s.erase(tmp);
-			t.erase(tmp);
-		}
+	// 	}
 
-		it1 = t.begin();
-		it2 = s.begin();
+	// 	auto it1 = t.begin();
+	// 	auto it2 = s.begin();
 
-		for(;it1 != t.end(); ++it1, ++it2)
-		{
-			if (*it1 != *it2)
-			{
-				std::cout << "bad erase" << std::endl;
-			}
-		}
-	}
+	// 	for(;it1 != t.end(); ++it1, ++it2)
+	// 	{
+	// 		if (*it1 != *it2)
+	// 		{
+	// 			std::cout << "bad insert" << std::endl;
+	// 		}
+	// 	}
+
+
+	// 	for(int j = 0; j < 100000; ++j)
+	// 	{
+	// 		idx = rand() % 100;
+	// 		s.erase(tmp);
+	// 		t.erase(tmp);
+	// 	}
+
+	// 	it1 = t.begin();
+	// 	it2 = s.begin();
+
+	// 	for(;it1 != t.end(); ++it1, ++it2)
+	// 	{
+	// 		if (*it1 != *it2)
+	// 		{
+	// 			std::cout << "bad erase" << std::endl;
+	// 		}
+	// 	}
+	// }
 	
 
 
