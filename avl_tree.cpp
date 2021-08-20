@@ -1,8 +1,6 @@
 #include<iostream>
 #include<vector>
 #include<ctime>
-#include<queue>
-#include<set>
 
 template<typename T>
 class avl_tree
@@ -237,26 +235,6 @@ class avl_tree
 
 	void balance(node * ptr)
 	{
-		// if ( (left_hight(ptr) - right_hight(ptr) < -1) || (left_hight(ptr) - right_hight(ptr) > 1))
-		// {
-		// 	if (ptr->right && (right_hight(ptr->right->right) > left_hight(ptr->right->right)))
-		// 	{
-		// 		RR(ptr);
-		// 	}
-		// 	else if (ptr->left && (left_hight(ptr->left) - right_hight(ptr->left) > 1))
-		// 	{
-		// 		LL(ptr);
-		// 	}
-		// 	else if (ptr->right && ptr->right->left && (right_hight(ptr) - left_hight(ptr) > 1))
-		// 	{
-		// 		RL(ptr);
-		// 	}
-		// 	else
-		// 	{
-		// 		LR(ptr);
-		// 	}
-		// }
-
 		if (right_hight(ptr) - left_hight(ptr) > 1)
 		{
 			if (right_hight(ptr->right) >= left_hight(ptr->right))
@@ -328,7 +306,6 @@ public:
 		size++;
 		hights(tmp);
 		return;
-		// balance(ptr);
 	}
 
 	void erase(T x)
@@ -347,7 +324,6 @@ public:
 				if (ptr->par->left == ptr)
 				{
 					ptr->par->left = nullptr;
-					// std::cout << "we here" << std::endl;
 				}
 				else
 				{
@@ -356,7 +332,6 @@ public:
 			}
 			else
 			{
-				// std::cout << "we here" << std::endl;
 				delete ptr;
 				root = nullptr;
 				return;
@@ -410,7 +385,6 @@ public:
 			{
 				tmp = tmp->right;
 			}
-			// std::cout << "tmp val " << tmp->val << std::endl;
 			ptr->val = tmp->val;
 			ptr = tmp;
 			if (ptr->par)
@@ -429,7 +403,6 @@ public:
 				}
 			}
 		}
-		// std::cout <<  "ptr val " << ptr->val << std::endl;
 		size--;
 		p = ptr->par;
 		if (ptr == root)
@@ -441,15 +414,6 @@ public:
 			delete ptr;
 		}
 		hights(p);
-		// if (!p)
-		// {
-		// 	std::cout << "no parent " << std::endl;
-		// }
-		// std::cout << "root val " << root->val << std::endl;
-
-		// decrease_hight(p);
-		//balance(p);
-
 	}
 
 	bool find(T x)
@@ -511,7 +475,6 @@ public:
 		{
 			return 0;
 		}
-		// std::cout << ptr->val << std::endl;
 		if (ptr && ptr->left && ptr->right)
 		{
 			return check_parents(ptr->left) + check_parents(ptr->right);
@@ -604,210 +567,7 @@ public:
 };
 
 
-const int w[] = {33, 76, 62, 0, 4, 35, 27, 41, 47, 86};
-
 int main()
-{
-	avl_tree<int> t;
-	std::vector<int> v;
-	srand(time(NULL));
-	int tmp;
-
-
-	// const int n = 10;
-
-	// for (int i = 0; i < n; ++i)
-	// {
-	// 	tmp = rand() % 100;
-	// 	v.push_back(tmp);
-	// 	std::cout << tmp << " ";
-	// }
-	// std::cout << std::endl;
-
-
-	for (int i = 0; i < 10; ++i)
-	{
-		t.insert(w[i]);
-		std::cout << "incert " << w[i] << std::endl;
-		for (auto a = t.begin(); a != t.end(); ++a)
-		{
-			std::cout << *a  << " " << a.hight() << std::endl;
-		}
-	}
-
-	for (int i = 0; i < 10; ++i)
-	{
-		t.erase(w[i]);
-		std::cout << "del "<< w[i] << std::endl;
-		for (auto a = t.begin(); a != t.end(); ++a)
-		{
-			std::cout << *a  << " " << a.hight() << std::endl;
-		}
-
-	}
-
-	// std::cout << std::endl;
-	// std::cout << "parents = " << t.check_parents() << std::endl;
-
-	// for (auto a : t)
-	// {
-	// 	std::cout << a << ' ';
-	// }
-	// std::cout << std::endl;
-	// std::cout << std::endl;
-	// std::cout << std::endl;
-	// std::cout << std::endl;
-
-	// for (int i = 0; i < 10; ++i)
-	// {
-	// 	std::cout << "delete - "<< w[i] << std::endl;
-	// 	t.erase(w[i]);
-	// 	for (auto a : t)
-	// 	{
-	// 		std::cout << a << ' ';
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << std::endl;
-		// std::cout << std::endl;
-		// t.display();
-		// std::cout << std::endl;
-		// std::cout << "parents = " <<  t.check_parents() << std::endl;
-		// std::cout << std::endl;
-		// std::cout << std::endl;
-
-	// for(auto a : t)
-	// {
-	// 	std::cout << " a" << std::endl;
-	// }
-
-	
-
-	// std::cout << (t.begin() != t.end()) << std::endl;
-	// std::cout << (t.begin().ptr) << std::endl;
-
-
-	// std::cout << "delete - " << w[7] << std::endl;
-	// t.erase(w[7]);
-	// std::cout << t.root->val << std::endl;
-	// std::cout << t.root->right->val << std::endl;
-	// std::cout << (t.root->left == nullptr) << std::endl;
-	// std::cout << (t.root->right->left == nullptr) << std::endl;
-	// std::cout << (t.root->right->right == nullptr) << std::endl;
-	// std::cout << (t.root->)
-
-	// for (auto a : t)
-	// {
-	// 	std::cout << a << ' ';
-	// }
-
-	// std::cout << t.root->val << std::endl;
-	// std::cout << t.root->left->val << std::endl;
-	// std::cout << t.root->left->par->val << std::endl;
-
-	// std::cout << t.root->right->val << std::endl;
-	// std::cout << t.root->right->par->val <<std::endl;
-
-	// std::cout << t.find_(41)->val << std::endl;
-	// t.erase(41);
-
-
-	// for (int i = 0; i < 100; ++i)
-	// {
-	// 	std::cout << i << std::endl;
-	// 	avl_tree<int> t;
-	// 	std::set<int> s;
-	// 	std::vector<int> v;
-	// 	int idx;
-
-	// 	for (int j = 0; j < 100000; ++j)
-	// 	{
-	// 		tmp = rand() % 100;
-	// 		v.push_back(tmp);
-	// 		s.insert(tmp);
-	// 		t.insert(tmp);
-
-
-	// 	}
-
-	// 	auto it1 = t.begin();
-	// 	auto it2 = s.begin();
-
-	// 	for(;it1 != t.end(); ++it1, ++it2)
-	// 	{
-	// 		if (*it1 != *it2)
-	// 		{
-	// 			std::cout << "bad insert" << std::endl;
-	// 		}
-	// 	}
-
-
-	// 	for(int j = 0; j < 100000; ++j)
-	// 	{
-	// 		idx = rand() % 100;
-	// 		s.erase(tmp);
-	// 		t.erase(tmp);
-	// 	}
-
-	// 	it1 = t.begin();
-	// 	it2 = s.begin();
-
-	// 	for(;it1 != t.end(); ++it1, ++it2)
-	// 	{
-	// 		if (*it1 != *it2)
-	// 		{
-	// 			std::cout << "bad erase" << std::endl;
-	// 		}
-	// 	}
-	// }
-	
-
-
-
-
-
-	// std::cout << t.find(0) << std::endl;
-	// std::cout << t.find(1) << std::endl;
-	// std::cout << t.find(2) << std::endl;
-	// std::cout << t.find(3) << std::endl;
-
-	// t.insert(0);
-	// std::cout << t.find(0) << std::endl;
-
-	// for(auto a : t)
-	// {
-	// 	std::cout << a << ' ';
-	// }
-	// std::cout << std::endl;
-
-	// t.erase(33);
-
-	// for(auto a : t)
-	// {
-	// 	std::cout << a << ' ';
-	// }
-	// std::cout << std::endl;
-
-
-
-	// for (int i = 0; i < n; ++i)
-	// {
-	// 	tmp = rand() % n;
-	// 	std::cout << "del " << v[tmp] << std::endl;
-	// 	t.erase(v[tmp]);
-	// 	for (auto a : t)
-	// 	{
-	// 		std::cout << a << ' ';
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-
-	// t.erase(0);
-	// t.erase(1);
-
-	// std::cout << t.find(0) << std::endl;
-
-
-
-}
+{}
 
 
