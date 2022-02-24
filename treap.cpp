@@ -283,7 +283,6 @@ int main()
     
     t.erase(5);
     print_all("t find 5", t.find(5), "\nt find 6", t.find(6), "\nt find 7", t.find(7), "\n");
-    
-    
+
 
 }
