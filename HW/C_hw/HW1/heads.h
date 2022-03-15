@@ -1,0 +1,1 @@
+int find_quantity_between_first_and_second(char *str);
